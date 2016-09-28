@@ -1,0 +1,52 @@
+<html>
+    <head>
+       <title>Friends</title>
+       <link rel="stylesheet" type="text/css" href="../static/styles/master.css">
+    </head>
+    <body>
+        <div class="main">
+            <h3>These are all my friends!</h3>
+            <!-- with all the data we can then construct a more structured output -->
+
+            <table>
+              <tr>
+                <th>ID</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th class='date'>Created</th>
+                <th class='action'>Action</th>
+              </tr>
+              {% for friend in friendlist: %}
+              <tr>
+                <th>{{ friend['id'] }}</th>
+                <th>{{ friend['firstname'] }}</th>
+                <th>{{ friend['lastname'] }}</th>
+                <th>{{ friend['email'] }}</th>
+                <th class='date'>{{ friend['created_at']}}</th>
+                <th class='action'>
+                    <form  class='mybutton' action="/friends/{{ friend['id'] }}/edit" method="get"><input type="submit" name="{{ friend['id'] }}" value="edit"></form>
+                    <form  class='mybutton' action="/friends/{{ friend['id'] }}/delete" method="post"><input type="submit" name="{{ friend['id'] }}" value="del"></form>
+                </th>
+              </tr>
+              {% endfor %}
+            </table>
+            <h3>Add a new friend!</h3>
+            <form action="/friends" method="post">
+                email : <input type="text" name="email" value="">
+                First Name : <input type="text" name="firstname" value="">
+                Last Name : <input type="text" name="lastname" value="">
+                <input type='submit' value='Submit'>
+            </form>
+            <div class="msg">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p>{{message}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </body>
+</html>
